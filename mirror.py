@@ -140,6 +140,12 @@ def main():
         "",
         html,
     )
+    # index.html: set on-prem env so the sandbox skips telemetry to col.csbops.io
+    html = re.sub(
+        r'<script>window\.process=BrowserFS\.BFSRequire\("process"\),window\.Buffer=BrowserFS\.BFSRequire\("buffer"\)\.Buffer</script>',
+        r'<script>window.process=BrowserFS.BFSRequire("process"),window.Buffer=BrowserFS.BFSRequire("buffer").Buffer</script><script>window._env_={IS_ONPREM:"true"}</script>',
+        html,
+    )
     open(idx, "w").write(html)
     print("index.html cleaned; scripts:", re.findall(r'src="([^"]+)"', html))
 
